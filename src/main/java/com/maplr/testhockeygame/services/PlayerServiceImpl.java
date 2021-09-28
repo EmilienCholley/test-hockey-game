@@ -34,6 +34,11 @@ public class PlayerServiceImpl implements PlayerService {
                     HttpStatus.CONFLICT, "Number already used by a player of the team");
         }
 
+        if (player.isCaptain() && playerDAO.findByTeamAndIsCaptain(team,true) != null) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Another player is already captain in this team");
+        }
+
         player.setTeam(team);
 
         return playerDAO.save(player);
